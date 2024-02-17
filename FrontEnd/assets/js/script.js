@@ -1,40 +1,78 @@
-// Récupération de l'élément portfolio
+// Récupère l'élément HTML avec l'ID 'portfolio' où les boutons seront ajoutés
 const portfolioSection = document.getElementById('portfolio');
 
-// Création des boutons
+// Crée les boutons de filtrage pour les catégories spécifiées
 const categories = ['Tous', 'Objets', 'Appartements', 'Hôtels & Restaurants'];
-const buttonsContainer = document.createElement('div');
-buttonsContainer.id = 'buttons';
-buttonsContainer.classList.add('button-container'); // Ajout de la classe pour personnalisation CSS
+const buttonsContainer = document.createElement('div'); // Crée un conteneur pour les boutons
+buttonsContainer.id = 'buttons'; // Définit l'ID du conteneur
+buttonsContainer.classList.add('button-container'); // Ajoute une classe pour personnaliser les styles CSS
 
+// Parcourt chaque catégorie et crée un bouton pour chaque catégorie
 categories.forEach(category => {
-    const button = document.createElement('button');
-    button.textContent = category;
-    button.classList.add('filter-button'); // Ajout de la classe pour personnalisation CSS
-    button.addEventListener('click', () => filtrerElements(category));
-    buttonsContainer.appendChild(button);
+    const button = document.createElement('button'); // Crée un bouton
+    button.textContent = category; // Définit le texte du bouton
+    button.classList.add('filter-button'); // Ajoute une classe pour personnaliser les styles CSS
+    button.addEventListener('click', () => filtrerElements(category)); // Ajoute un écouteur d'événements pour filtrer les éléments lors du clic sur le bouton
+    buttonsContainer.appendChild(button); // Ajoute le bouton au conteneur
 });
 
-// Ajout des boutons au conteneur
+// Ajoute le conteneur de boutons à la section du portfolio dans le HTML
 portfolioSection.appendChild(buttonsContainer);
 
-// Récupération de la galerie
+// Récupère l'élément HTML avec la classe 'gallery' où les éléments seront filtrés
 const gallery = document.querySelector('.gallery');
 
-// Fonction pour filtrer les éléments
+// Fonction pour filtrer les éléments en fonction de la catégorie sélectionnée
 function filtrerElements(categorie) {
-    const elements = gallery.querySelectorAll('figure');
+    const elements = gallery.querySelectorAll('figure'); // Sélectionne tous les éléments <figure> dans la galerie
     elements.forEach(element => {
         if (categorie === 'Tous' || element.classList.contains(categorie)) {
-            element.style.display = 'block';
+            element.style.display = 'block'; // Affiche l'élément s'il correspond à la catégorie sélectionnée ou si la catégorie est 'Tous'
         } else {
-            element.style.display = 'none';
+            element.style.display = 'none'; // Masque l'élément s'il ne correspond pas à la catégorie sélectionnée
         }
     });
 }
 
 
 
+// ************ Apparition des images ***********
+
+// Envoie une requête GET à l'URL spécifiée (l'API des works) pour récupérer les données
+fetch('http://localhost:5678/api/works/')
+  // Gère la réponse de la requête en la convertissant en JSON
+  .then(response => response.json()) 
+  // Traite les données récupérées
+  .then(works => {
+    // Sélectionne l'élément HTML avec la classe 'gallery' où les images seront affichées
+    const gallery = document.querySelector('.gallery');
+
+    // Parcourt chaque work (travail) dans les données récupérées
+    works.forEach(work => {
+      // Crée un élément <figure> pour chaque work
+      const figure = document.createElement('figure');
+      // Définit l'attribut 'data-category' de la figure pour filtrage futur (si nécessaire)
+      figure.setAttribute('data-category', work.category.name.toLowerCase());
+     
+      // Crée un élément <img> pour afficher l'image du work
+      const img = document.createElement('img');
+      img.src = work.imageUrl; // URL de l'image
+      img.alt = work.title; // Texte alternatif de l'image (pour l'accessibilité)
+
+      // Crée un élément <figcaption> pour afficher le titre du work
+      const figcaption = document.createElement('figcaption');
+      figcaption.textContent = work.title; // Titre du work
+
+      // Ajoute l'image et le titre au <figure>
+      figure.appendChild(img);
+      figure.appendChild(figcaption);
+
+      // Ajoute la <figure> à la galerie
+      gallery.appendChild(figure);
+    });
+  })
+  // Gère les erreurs qui pourraient survenir lors de la récupération des données
+  .catch(error => console.error('Erreur lors de la récupération des works :', error));
 
 
 
@@ -60,39 +98,4 @@ function filtrerElements(categorie) {
 
 
 
-// const filters = document.querySelector(".filters");
-
-// document.addEventListener("DOMContentLoaded", function () {
-//     const images = [
-//         { src: "assets/images/abajour-tahina.png", alt: "Abajour Tahina", caption: "Abajour Tahina" },
-//         { src: "assets/images/appartement-paris-v.png", alt: "Appartement Paris V", caption: "Appartement Paris V" },
-//         { src: "assets/images/restaurant-sushisen-londres.png", alt: "Restaurant Sushisen - Londres", caption: "Restaurant Sushisen - Londres" },
-//         { src: "assets/images/la-balisiere.png", alt: "Villa “La Balisiere” - Port Louis", caption: "Villa “La Balisiere” - Port Louis" },
-//         { src: "assets/images/structures-thermopolis.png", alt: "Structures Thermopolis", caption: "Structures Thermopolis" },
-//         { src: "assets/images/appartement-paris-x.png", alt: "Appartement Paris X", caption: "Appartement Paris X" },
-//         { src: "assets/images/le-coteau-cassis.png", alt: "Pavillon “Le coteau” - Cassis", caption: "Pavillon “Le coteau” - Cassis" },
-//         { src: "assets/images/villa-ferneze.png", alt: "Villa Ferneze - Isola d’Elba", caption: "Villa Ferneze - Isola d’Elba" },
-//         { src: "assets/images/appartement-paris-xviii.png", alt: "Appartement Paris XVIII", caption: "Appartement Paris XVIII" },
-//         { src: "assets/images/bar-lullaby-paris.png", alt: "Bar “Lullaby” - Paris", caption: "Bar “Lullaby” - Paris" },
-//         { src: "assets/images/hotel-first-arte-new-delhi.png", alt: "Hotel First Arte - New Delhi", caption: "Hotel First Arte - New Delhi" }
-//     ];
-
-//     const gallery = document.querySelector(".gallery");
-
-//     images.forEach(function (image) {
-//         const figure = document.createElement("figure");
-//         const img = document.createElement("img");
-//         const figcaption = document.createElement("figcaption");
-
-//         img.src = image.src;
-//         img.alt = image.alt;
-
-//         figcaption.textContent = image.caption;
-
-//         figure.appendChild(img);
-//         figure.appendChild(figcaption);
-
-//         gallery.appendChild(figure);
-//     });
-// });
 

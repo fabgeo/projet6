@@ -58,11 +58,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-//------------------------- Fin du code de gestion du formulaire de connexion -----------------------------------------------------
+//  ************Fin du code de gestion du formulaire de connexion******
 
 
 
-//----------------------------code Gestion de l'interface utilisateur--------------------------------------------------------
+// **********code Gestion de l'interface utilisateur******
 // Attend que le DOM soit complètement chargé avant d'exécuter le code
 document.addEventListener("DOMContentLoaded", function () {
 
