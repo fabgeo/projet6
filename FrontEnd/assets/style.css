@@ -248,3 +248,27 @@ footer nav ul {
 }
 
 /****** FIN LOGIN ******/
+/****** BOUTTON Filter ******/
+
+.filter-button {
+    padding: 10px 20px;
+    border: 1px solid #1D6154;
+    border-radius: 25px;
+    background-color: white; 
+    color: #1D6154; 
+    font-size: 20px;
+	font-weight: 500; 
+    cursor: pointer;
+}
+
+.filter-button:hover {
+    background-color: #1D6154; /* Couleur de fond au survol */
+	color: white;
+}
+
+/* Styles pour le conteneur des boutons */
+.button-container {
+    display: flex;
+	justify-content: center;
+	gap: 15px;
+}
